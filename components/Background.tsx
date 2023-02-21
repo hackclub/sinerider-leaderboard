@@ -3,6 +3,7 @@ import React, { useEffect, useState, ReactNode } from "react";
 interface RandomBackgroundProps {
   children: ReactNode;
 }
+
 const Background = ({ children }: RandomBackgroundProps) => {
   const [backgroundUrl, setBackgroundUrl] = useState("");
 
@@ -22,7 +23,7 @@ const Background = ({ children }: RandomBackgroundProps) => {
     <div
       style={{
         background: `${backgroundUrl} `,
-        backgroundSize: "100% auto",
+        backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
       }}
@@ -31,6 +32,5 @@ const Background = ({ children }: RandomBackgroundProps) => {
     </div>
   );
 };
-
 
 export default Background;
