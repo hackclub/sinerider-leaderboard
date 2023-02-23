@@ -1,8 +1,35 @@
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Background from "../components/Background";
 
+interface Score {
+  id: string;
+  expression: string;
+  T: number;
+  level: string;
+  charCount: number;
+}
+
 const Home: NextPage = () => {
+  const [topScores, setTopScores] = useState<Score[]>([]);
+  useEffect(() => {
+    fetch("https://sinerider-production.up.railway.app/all")
+      .then((response) => response.json())
+      .then((data) => {
+        const scores = data.scores; // Get the scores array from the response data
+        // Sort scores by T and charCount in ascending order
+        const sortedScores = scores.sort(
+          (a: Score, b: Score) => a.T - b.T || a.charCount - b.charCount
+        );
+        // Take the top 5 scores
+        const top5Scores = sortedScores.slice(0, 5);
+        setTopScores(top5Scores);
+      });
+  }, []);
+
+  console.log("Top 5 scores:", topScores);
+
   return (
     <>
       <Background>
@@ -17,46 +44,23 @@ const Home: NextPage = () => {
                 Leaderboard
               </button>
             </div>
-            <div className="bg-white flex sm:h-[127px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10">
-              <div className="font-bold font-mono sm:text-[64px] text-[32px]">
-                1
+            {topScores.map((score, index) => (
+              <div
+                key={score.id}
+                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
+                  index > 0 ? "5" : "0"
+                }`}
+              >
+                <div className="font-bold font-mono sm:text-[48px] text-[22px]">
+                  {index + 1}
+                </div>
+                <div>Player name</div>
+                <div className="sm:text-[52px] text-[22px] font-bold font-mono">
+                  {score.T.toFixed(2)}
+                </div>
+                <div>image</div>
               </div>
-              <div>Player name</div>
-              <div>score</div>
-              <div>image</div>
-            </div>
-            <div className="bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5">
-              <div className="font-bold font-mono sm:text-[48px] text-[22px]">
-                2
-              </div>
-              <div>Player name</div>
-              <div>score</div>
-              <div>image</div>
-            </div>
-            <div className="bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5">
-              <div className="font-bold font-mono sm:text-[48px] text-[22px]">
-                3
-              </div>
-              <div>Player name</div>
-              <div>score</div>
-              <div>image</div>
-            </div>
-            <div className="bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5">
-              <div className="font-bold font-mono sm:text-[48px] text-[22px]">
-                4
-              </div>
-              <div>Player name</div>
-              <div>score</div>
-              <div>image</div>
-            </div>
-            <div className="bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5">
-              <div className="font-bold font-mono sm:text-[48px] text-[22px]">
-                5
-              </div>
-              <div>Player name</div>
-              <div>score</div>
-              <div>image</div>
-            </div>
+            ))}
           </div>
         </div>
       </Background>
