@@ -14,7 +14,7 @@ interface Score {
 const Home: NextPage = () => {
   const [topScores, setTopScores] = useState<Score[]>([]);
   useEffect(() => {
-    fetch("https://sinerider-scoring.up.railway.app//all")
+    fetch("https://sinerider-scoring.up.railway.app/all")
       .then((response) => response.json())
       .then((data) => {
         const scores = data.scores; // Get the scores array from the response data
