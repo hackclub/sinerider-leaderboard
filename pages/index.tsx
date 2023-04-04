@@ -74,7 +74,7 @@ const Home: NextPage = () => {
                 <div></div>{score.charCount} <span>char</span>
                 <div className="flex items-center">
                 <div className="sm:text-[52px] text-[22px] font-bold font-mono">
-              {score.T ? parseInt(score.T * 60).toString() : ""}
+                {score.T ? parseInt((score.T * 60).toString()) : ""}
                 </div>
                 <span >seconds</span>
                 </div>
