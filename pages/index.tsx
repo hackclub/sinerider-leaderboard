@@ -41,12 +41,21 @@ const Home: NextPage = () => {
         </Head>
         <div className="pt-[100px]">
           <div className="md:w-[1200px] ml-auto mr-auto">
-            <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:ml-5 sm:mr-5 px-10 mt-5">
-              <div>
-                <Image src={sledguy} width={109} height={116} alt="sled" />
-              </div>
+            <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:ml-5 sm:mr-5 px-10 mt-5 justify-between ">
+              <div className="items-center flex gap-8">
+                <div>
+                  <Image src={sledguy} width={100} height={100} alt="sled" />
+                </div>
 
-              <div className="font-mono text-[62px]">SinerRider</div>
+                <div className="font-mono text-[62px] flex items-center">
+                  SinerRider
+                </div>
+              </div>
+              <div className="mr-20">
+                <select>
+                  <option>All Time</option>
+                </select>
+              </div>
             </div>
           </div>
           <div className="md:w-[1200px] ml-auto mr-auto">
@@ -61,10 +70,14 @@ const Home: NextPage = () => {
                   {index + 1}
                 </div>
                 <div>Player name</div>
+                <div> </div> <span>plays</span>
+                <div></div>{score.charCount} <span>char</span>
+                <div className="flex items-center">
                 <div className="sm:text-[52px] text-[22px] font-bold font-mono">
-                  {score.T ? score.T.toFixed(2) : ""}
+              {score.T ? parseInt(score.T * 60).toString() : ""}
                 </div>
-                <div>image</div>
+                <span >seconds</span>
+                </div>
               </div>
             ))}
           </div>
