@@ -15,22 +15,42 @@ interface Score {
 
 const Home: NextPage = () => {
   const [topScores, setTopScores] = useState<Score[]>([]);
+  const [levels, setLevels] = useState<Set<string>>(new Set()); 
+
   useEffect(() => {
     fetch("https://sinerider-api.herokuapp.com/all")
       .then((response) => response.json())
       .then((data) => {
-        const scores = data.scores; // Get the scores array from the response data
-        // Sort scores by T and charCount in ascending order
+        const scores = data.scores;
         const sortedScores = scores.sort(
           (a: Score, b: Score) => a.T - b.T || a.charCount - b.charCount
         );
-        // Take the top 4 scores
-        const top5Scores = sortedScores.slice(0, 4);
-        setTopScores(top5Scores);
+        const top4Scores = sortedScores.slice(0, 4);
+        setTopScores(top4Scores);
+
+       
+        const levels = new Set(scores.map((score: Score) => score.level));
+        setLevels(levels);
       });
   }, []);
 
   console.log("Top 4 scores:", topScores);
+  console.log("Levels:", levels);
+
+  const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLevel = event.target.value;
+    console.log(`Selected level: ${selectedLevel}`);
+    fetch(`https://sinerider-api.herokuapp.com/level/${selectedLevel}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const scores = data.scores;
+        const sortedScores = scores.sort(
+          (a: Score, b: Score) => a.T - b.T || a.charCount - b.charCount
+        );
+        const top4Scores = sortedScores.slice(0, 4);
+        setTopScores(top4Scores);
+      });
+  };
 
   return (
     <>
@@ -41,19 +61,26 @@ const Home: NextPage = () => {
         </Head>
         <div className="pt-[100px]">
           <div className="md:w-[1200px] ml-auto mr-auto">
-            <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:ml-5 sm:mr-5 px-10 mt-5 justify-between ">
-              <div className="items-center flex gap-8">
+            <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:w-full w-[90%] justify-between px-5 py-3">
+              <div className="flex items-center gap-10">
                 <div>
-                  <Image src={sledguy} width={100} height={100} alt="sled" />
-                </div>
-
-                <div className="font-mono sm:text-[62px] text-[22px] flex items-center">
-                  SinerRider
-                </div>
+              <Image src={sledguy} alt="sled" height={90} width={90} />
               </div>
-              <div className="mr-20">
-                <select>
-                  <option>All Time</option>
+              <div className="font-mono sm:text-[54px] text-[22px]">
+              SineRider
+              </div>
+              </div>
+              <div>
+                <select
+                  
+                  onChange={handleLevelSelect}
+                >
+                  <option value="">All time</option>
+                  {[...levels].map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -63,7 +90,8 @@ const Home: NextPage = () => {
               <div
                 key={score.id}
                 className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
-                  index > 0 ? "4" : "0"
+                  index > 0 ? "4"
+ : "0"
                 }`}
               >
                 <div className="font-bold font-mono sm:text-[48px] text-[22px]">
