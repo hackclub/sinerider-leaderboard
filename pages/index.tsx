@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                   <Image src={sledguy} width={100} height={100} alt="sled" />
                 </div>
 
-                <div className="font-mono text-[62px] flex items-center">
+                <div className="font-mono sm:text-[62px] text-[22px] flex items-center">
                   SinerRider
                 </div>
               </div>
