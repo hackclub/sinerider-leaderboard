@@ -6,9 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-usestateref": "^1.0.8",
+    "webpack": "^5.78.0"
   },
   "devDependencies": {
     "@types/node": "18.11.3",

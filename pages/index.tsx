@@ -1,10 +1,11 @@
 // @ts-nocheck
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Background from "../components/Background";
 import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
+import useState from 'react-usestateref';
 
 interface Score {
   id: string;
@@ -15,54 +16,89 @@ interface Score {
   player: string
 }
 
+
 const Home: NextPage = () => {
-  const [topScores, setTopScores] = useState<Score[]>([]);
-  const [levels, setLevels] = useState<Set<string>>(new Set());
+  const [topScores, setTopScores, topScoresRef] = useState<Score[]>([]);
+  const [levels, setLevels, levelsRef] = useState<Set<string>>(new Set());
+  const [highscoreType, setHighscoreType, highscoreTypeRef] = useState<string>("time")
+  const [currentLevel, setCurrentLevel, currentLevelRef] = useState<string>("")
 
-  async function getScores(level?: string) {
-    let response;
-    if (level) {
-      response = await fetch(`https://sinerider-api.herokuapp.com/level/${level}`)
-    } else {
-      response = await fetch("https://sinerider-api.herokuapp.com/all")
-    }
-
+  async function getScores(level: string, highscoreType: string) {
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
+    const url = `${SINERIDER_API_URL}/level/${level}/${highscoreTypeRef.current}`
+    //console.log(`getting scores with url: ${url}`)
+    const response = await fetch(url)
     const data = await response.json();
-
-    return data.scores.sort((a, b) => (a.time - b.time), 0);
+    return data.scores;
   }
 
+  async function getLevels(level: string) {
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
+    const response = await fetch(`${SINERIDER_API_URL}/levels`)
+    const data = await response.json();
+    return data.levels as string[];
+  }
+
+  async function refreshScores() {
+    if (currentLevelRef.current == null || currentLevelRef.length == 0) {
+      return
+    }
+
+    getScores(currentLevelRef.current, highscoreTypeRef.current).then(scores => {
+      setTopScores(scores);
+    })
+  }
+
+  function makeTypePretty() {
+    switch(highscoreTypeRef.current) {
+      case "time": return "Time"
+      case "charCount": return "Length"
+    }
+  }
+
+  function getRating(score: Score) {
+    switch(highscoreTypeRef.current) {
+      case "time": return 'time' in score ? score.time.toFixed(3) : "<undefined>"
+      case "charCount": return 'charCount' in score ? score.charCount : "<undefined>"
+    }
+    return "<undefined>"
+  }
+
+
+  function refreshLevels() {
+    getLevels()
+    .then(levels => {
+      //console.log("Levels: " + levels);
+      setLevels(new Set(levels));
+
+      if (levels.length > 0) {
+        const l = levels[0]
+        //console.log("Current level: " + l)
+        setCurrentLevel(l)
+      }
+      refreshScores().then()
+    });
+  }
+
+  // Refresh level list on first render
   useEffect(() => {
-    getScores()
-      .then(scores => {
-        const top4Scores = scores.slice(0, 4);
-        setTopScores(top4Scores);
-
-        const levels = new Set(scores.map((score: Score) => score.level));
-        setLevels(levels);
-      });
+    refreshLevels()
   }, []);
-
-  console.log("Top 4 scores:", topScores);
-  console.log("Levels:", levels);
 
   const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLevel = event.target.value;
-    console.log(`Selected level: ${selectedLevel}`);
-
-    if (selectedLevel.trim().length === 0) {
-      getScores().then(scores => {
-        const top4Scores = scores.slice(0, 4);
-        setTopScores(top4Scores);
-      })
-    } else {
-      getScores(selectedLevel)
-        .then(scores => {
-          const top4Scores = scores.slice(0, 4);
-          setTopScores(top4Scores);
-        })
-    }
+    //console.log(`Selected level: ${selectedLevel}`);
+    setCurrentLevel(selectedLevel)
+    refreshScores().then()
   };
+
+  const handleHighScoreTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const hst = event.target.value;
+    //console.log(`Selected high score type: ${hst}`);
+    setHighscoreType(hst)
+    refreshScores().then()
+  };
+
 
   return (
     <>
@@ -72,7 +108,7 @@ const Home: NextPage = () => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className="pt-[100px]">
-          <div className="md:w-[1200px] ml-auto mr-auto">
+          <div className="md:w-[1000px] ml-auto mr-auto">
             <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:w-full w-[90%] justify-between px-5 py-3">
               <div className="flex items-center gap-10">
                 <div>
@@ -83,21 +119,35 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div>
-                <select
-
-                  onChange={handleLevelSelect}
-                >
-                  <option value="">All time</option>
+              <div style={{width:"500px"}}>
+                <div style={{width:"200px", float:"left", textAlign:"right", paddingRight:"20px"}}>Challenges</div>
+                <select style={{width:"300px"}} onChange={handleLevelSelect}>
                   {[...levels].map((level) => (
                     <option key={level} value={level}>
                       {level}
                     </option>
                   ))}
                 </select>
+                </div>
+              <div style={{width:"500px"}}>
+                <div style={{width:"200px", float:"left", textAlign:"right", paddingRight:"20px"}}>Rank by</div>
+                <select style={{width:"300px"}} onChange={handleHighScoreTypeSelect}>
+                  <option key="time" value="time">Time</option>
+                  <option key="charCount" value="charCount">Length</option>
+                </select>
+              </div>
               </div>
             </div>
           </div>
-          <div className="md:w-[1200px] ml-auto mr-auto">
+          <div style={{ paddingTop:"50px"}} className="md:w-[800px] ml-auto mr-auto">
+            <div className={`bg-white flex sm:h-[50px] h-[50px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5}`}>
+              <div style={{width:"50px", textAlign:"center"}}>Position</div>
+              <div style={{paddingLeft:"30px", width: "200px", textAlign:"left"}}>Name</div>                
+              <div style={{width: "400px", textAlign:"center"}}>{makeTypePretty(highscoreType)}</div>
+            </div>
+          </div>
+
+          <div className="md:w-[800px] ml-auto mr-auto">
             {topScores.map((score, index) => (
               <div
                 key={score.id}
@@ -105,18 +155,9 @@ const Home: NextPage = () => {
                   : "0"
                   }`}
               >
-                <div className="font-bold font-mono sm:text-[48px] text-[22px]">
-                  {index + 1}
-                </div>
-                <div>{score.player.length > 0 ? score.player : "NO_NAME"}</div>
-                <div> </div> <span>plays</span>
-                <div></div> <span>{score.charCount} characters</span>
-                <div className="flex items-center">
-                  <div className="sm:text-[52px] text-[22px] font-bold font-mono">
-                    {score.time ? parseInt((score.time * 60).toString()) : ""}
-                  </div>
-                  <span >seconds</span>
-                </div>
+                <div style={{width: "50px", fontSize:30, fontWeight:"bold"}}>#{index + 1}</div>
+                <div style={{paddingLeft:"30px", width: "200px", textAlign:"left"}}>{score.player.length > 0 ? score.player : "NO_NAME"}</div>                
+                <div style={{width: "400px", textAlign:"center"}}>{getRating(score)}</div>
               </div>
             ))}
           </div>
