@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const [currentLevel, setCurrentLevel, currentLevelRef] = useState<string>("")
 
   async function getScores(level: string, highscoreType: string) {
-    const SINERIDER_API_URL = process.env.SINERIDER_API_URL
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
     const url = `${SINERIDER_API_URL}/level/${level}/${highscoreTypeRef.current}`
     //console.log(`getting scores with url: ${url}`)
     const response = await fetch(url)
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   }
 
   async function getLevels(level: string) {
-    const SINERIDER_API_URL = process.env.SINERIDER_API_URL
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
     const response = await fetch(`${SINERIDER_API_URL}/levels`)
     const data = await response.json();
     return data.levels as string[];
