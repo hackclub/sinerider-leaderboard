@@ -1,11 +1,14 @@
 // @ts-nocheck
 import { useEffect } from "react";
+import useState from "react-usestateref";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Background from "../components/Background";
 import Image from "next/image";
+import Background from "../components/Background";
+import RandomCharacter from "../components/randomCharacter";
+
 import sledguy from "../public/assets/sled.svg";
-import useState from "react-usestateref";
+import jack from "../public/assets/characters/jack.png";
 
 interface Score {
   id: string;
@@ -106,7 +109,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <>
+    <div>
       <Background>
         <Head>
           <title>SineRider Leaderboard</title>
@@ -118,19 +121,14 @@ const Home: NextPage = () => {
                 <div>
                   <Image src={sledguy} alt="sled" height={90} width={90} />
                 </div>
-                <div className="sm:text-5xl text-2xl">
-                  SineRider
-                </div>
+                <div className="sm:text-5xl text-2xl">SineRider</div>
               </div>
               <div>
                 <div>
                   <p className="float-left text-right pr-5 font-bold">
                     Challenges
                   </p>
-                  <select
-                      className="w-64"
-                      onChange={handleLevelSelect}
-                  >
+                  <select className="w-64" onChange={handleLevelSelect}>
                     {[...levels].map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -143,9 +141,10 @@ const Home: NextPage = () => {
                     Rank by
                   </p>
                   <select
-                      className="w-64 float-right"
-                      onChange={handleHighScoreTypeSelect}
+                    className="w-64 float-right"
+                    onChange={handleHighScoreTypeSelect}
                   >
+                    {/* Todo: realign with value */}
                     <option key="time" value="time">
                       Time
                     </option>
@@ -157,12 +156,8 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div
-            className="md:w-[800px] ml-auto mr-auto"
-          >
-            <div
-              className="bg-white flex sm:h-[50px] h-[50px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5"
-            >
+          <div className="md:w-[800px] ml-auto mr-auto">
+            <div className="bg-white flex sm:h-[50px] h-[50px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5">
               <div style={{ width: "50px", textAlign: "center" }}>Position</div>
               <div
                 style={{
@@ -181,35 +176,36 @@ const Home: NextPage = () => {
 
           <div className="md:w-[800px] ml-auto mr-auto">
             {topScores.map((score, index) => (
+              <div
+                key={score.id}
+                className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5 ${
+                  index > 0 ? "4" : "0"
+                } ${index == 0 && "sm:h-[117px] mb-10"}`}
+              >
+                <div className="text-4xl font-bold">#{index + 1}</div>
                 <div
-                    key={score.id}
-                    className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
-                        index > 0 ? "4" : "0"
-                    } ${index % 2 == 0 && "sm:h-[117px] mb-10"}`}
+                  style={{
+                    paddingLeft: "30px",
+                    width: "200px",
+                    textAlign: "left",
+                  }}
                 >
-                  <div
-                      className="text-4xl font-bold"
-                  >
-                    #{index + 1}
-                  </div>
-                  <div
-                      style={{
-                        paddingLeft: "30px",
-                        width: "200px",
-                        textAlign: "left",
-                      }}
-                  >
-                    {score.player.length > 0 ? score.player : "NO_NAME"}
-                  </div>
-                  <div style={{ width: "400px", textAlign: "center" }}>
-                    {getRating(score)}
-                  </div>
+                  {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
+                <div style={{ width: "400px", textAlign: "center" }}>
+                  {getRating(score)}
+                </div>
+                {index == 1 ? (
+                  <RandomCharacter />
+                ) : (
+                  <Image src={jack} alt="Jack" height={150} width={150} />
+                )}
+              </div>
             ))}
           </div>
         </div>
       </Background>
-    </>
+    </div>
   );
 };
 
