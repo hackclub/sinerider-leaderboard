@@ -21,12 +21,13 @@ const Background = ({ children }: RandomBackgroundProps) => {
 
   return (
     <div
-      style={{
-        background: `${backgroundUrl} `,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
+        style={{
+            background: `${backgroundUrl} `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            minHeight: "100vh",
+            minWidth: "100vw",
+        }}
     >
       {children}
     </div>
