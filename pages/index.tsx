@@ -162,7 +162,7 @@ const Home: NextPage = () => {
                 <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>{score.player.length > 0 ? score.player : "NO_NAME"}</div>
                 <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>
                   <MathJax>
-                    {`\\(${score.expression} \\)`}
+                    {`\\(${score.expression.replaceAll("\\\\", "\\")} \\)`}
                   </MathJax>
                 </div>
                 <div style={{ width: "400px", textAlign: "center" }}>{getRating(score)}</div>
