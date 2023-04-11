@@ -5,7 +5,7 @@ import { MathJaxContext } from "better-react-mathjax";
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <MathJaxContext>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </MathJaxContext>
   </>
 }
