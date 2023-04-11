@@ -6,6 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Background from "../components/Background";
 import RandomCharacter from "../components/randomCharacter";
+import { MathJax } from "better-react-mathjax";
 
 import sledguy from "../public/assets/sled.svg";
 import jack from "../public/assets/characters/jack.png";
@@ -177,14 +178,20 @@ const Home: NextPage = () => {
             {topScores.map((score, index, time) => (
               <div
                 key={score.id}
-                className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5 ${
-                  index > 0 ? "4" : "0"
-                } ${index == 0 && "sm:h-[117px] my-24"}`}
+                className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5 ${index > 0 ? "4" : "0"
+                  } ${index == 0 && "sm:h-[117px] my-24"}`}
               >
                 <div className="flex space-x-4">
                   <div className="text-4xl font-bold">{index + 1}</div>
                   <p className="self-center">
                     {score.player.length > 0 ? score.player : "Anonymous"}
+                  </p>
+                </div>
+                <div className="flex space-x-4 m-3">
+                  <p className="self-center">
+                    <MathJax>
+                      {score.expression}
+                    </MathJax>
                   </p>
                 </div>
                 <div className="space-x-6 flex">

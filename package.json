@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "better-react-mathjax": "^2.0.2",
     "dotenv": "^16.0.3",
     "next": "latest",
     "react": "18.2.0",
