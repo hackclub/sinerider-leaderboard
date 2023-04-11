@@ -49,8 +49,9 @@ const Home: NextPage = () => {
     }
 
     getScores(currentLevelRef.current, highscoreTypeRef.current).then(
-      (scores) => {
-        setTopScores(scores);
+      (scores: Score[]) => {
+        const validScores = scores.filter(score => score.time && score.charCount);
+        setTopScores(validScores);
       }
     );
   }
@@ -104,7 +105,9 @@ const Home: NextPage = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const hst = event.target.value;
-    //console.log(`Selected high score type: ${hst}`);
+    if (highscoreType != "charCount" && highscoreType != "time")
+      throw new Error("Invalid highscoreType");
+
     setHighscoreType(hst);
     refreshScores().then();
   };
@@ -190,7 +193,7 @@ const Home: NextPage = () => {
                 <div className="flex space-x-4 m-3">
                   <p className="self-center">
                     <MathJax>
-                      {score.expression}
+                      {`\\(${score.expression} \\)`}
                     </MathJax>
                   </p>
                 </div>
