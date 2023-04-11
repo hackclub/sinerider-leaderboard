@@ -6,7 +6,6 @@ export default function RandomCharacter() {
 
   const characters = [
     "/assets/characters/ada.png",
-    "/assets/characters/jack.png",
     "/assets/characters/crow.png",
     "/assets/characters/lavaMonster.png",
   ];
@@ -15,9 +14,9 @@ export default function RandomCharacter() {
     const randomIndex = Math.floor(Math.random() * characters.length);
     const randomCharacter = characters[randomIndex];
     setCharacter(randomCharacter);
-  });
+  }, []);
 
   return (
-    <Image src={character} alt="Random character" height={150} width={150} />
+    <Image src={character} alt="Random character" height={90} width={90} />
   );
 }

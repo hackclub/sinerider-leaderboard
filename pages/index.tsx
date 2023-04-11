@@ -144,7 +144,6 @@ const Home: NextPage = () => {
                     className="w-64 float-right"
                     onChange={handleHighScoreTypeSelect}
                   >
-                    {/* Todo: realign with value */}
                     <option key="time" value="time">
                       Time
                     </option>
@@ -156,44 +155,45 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="md:w-[800px] ml-auto mr-auto">
-            <div className="bg-white flex sm:h-[50px] h-[50px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5">
-              <div style={{ width: "50px", textAlign: "center" }}>Position</div>
+          {/*<div className="md:w-[800px] ml-auto mr-auto">
+            <div
+                className="bg-white flex sm:h-[50px] h-[50px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5">
+              <div style={{width: "50px", textAlign: "center"}}>Position</div>
               <div
-                style={{
-                  paddingLeft: "30px",
-                  width: "200px",
-                  textAlign: "left",
-                }}
-              >
-                Name
-              </div>
-              <div style={{ width: "400px", textAlign: "center" }}>
-                {makeTypePretty(highscoreType)}
-              </div>
-            </div>
-          </div>
-
-          <div className="md:w-[800px] ml-auto mr-auto">
-            {topScores.map((score, index) => (
-              <div
-                key={score.id}
-                className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5 ${
-                  index > 0 ? "4" : "0"
-                } ${index == 0 && "sm:h-[117px] mb-10"}`}
-              >
-                <div className="text-4xl font-bold">#{index + 1}</div>
-                <div
                   style={{
                     paddingLeft: "30px",
                     width: "200px",
                     textAlign: "left",
                   }}
-                >
-                  {score.player.length > 0 ? score.player : "NO_NAME"}
+              >
+                Name
+              </div>
+              <div style={{width: "400px", textAlign: "center"}}>
+                {makeTypePretty(highscoreType)}
+              </div>
+            </div>
+          </div>*/}
+          <div className="md:w-2/5 mx-auto">
+            {topScores.map((score, index, time) => (
+              <div
+                key={score.id}
+                className={`bg-white flex h-[90px] m-2 rounded-xl justify-between items-center sm:m-5 px-10 mt-5 ${
+                  index > 0 ? "4" : "0"
+                } ${index == 0 && "sm:h-[117px] my-24"}`}
+              >
+                <div className="flex space-x-4">
+                  <div className="text-4xl font-bold">{index + 1}</div>
+                  <p className="self-center">
+                    {score.player.length > 0 ? score.player : "Anonymous"}
+                  </p>
                 </div>
-                <div style={{ width: "400px", textAlign: "center" }}>
-                  {getRating(score)}
+                <div className="space-x-6 flex">
+                  <h2 className="text-2xl font-bold">
+                    {getRating(score)}
+                    <span className="text-sm font-normal ml-2">
+                      {highscoreType == "time" ? "seconds" : "characters"}
+                    </span>
+                  </h2>
                 </div>
                 {index == 1 ? (
                   <RandomCharacter />
