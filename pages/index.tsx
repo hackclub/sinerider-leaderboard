@@ -101,6 +101,23 @@ const Home: NextPage = () => {
     refreshScores().then()
   };
 
+  useEffect(() => {
+    const fetchTopScores = async () => {
+      try {
+        const response = await fetch(`/api/scores?type=${makeTypePretty()}&level=${currentLevelRef.current}`);
+        const scores = await response.json();
+        setTopScores(scores);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchTopScores();
+  }, [makeTypePretty]);
+
+
+
+  
 
   return (
     <>
@@ -148,7 +165,13 @@ const Home: NextPage = () => {
               <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>Expression</div>
               <div style={{ width: "400px", textAlign: "center" }}>{makeTypePretty(highscoreType)}</div>
             </div>
+            {topScores.length === 0 && (
+      <div className="text-center font-extrabold text-[32px] text-white pt-5">
+        No scores available for {makeTypePretty()} in {currentLevelRef.current}
+      </div>
+    )}
           </div>
+          
 
           <div className="md:w-[800px] ml-auto mr-auto">
             {topScores.map((score, index) => (
