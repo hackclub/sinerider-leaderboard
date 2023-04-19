@@ -5,7 +5,7 @@ import Head from "next/head";
 import Background from "../components/Background";
 import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
-import useState from 'react-usestateref';
+import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
 
 interface Score {
@@ -14,97 +14,109 @@ interface Score {
   time: number;
   level: string;
   charCount: number;
-  player: string
+  player: string;
 }
-
 
 const Home: NextPage = () => {
   const [topScores, setTopScores, topScoresRef] = useState<Score[]>([]);
   const [levels, setLevels, levelsRef] = useState<Set<string>>(new Set());
-  const [highscoreType, setHighscoreType, highscoreTypeRef] = useState<string>("time")
-  const [currentLevel, setCurrentLevel, currentLevelRef] = useState<string>("")
+  const [highscoreType, setHighscoreType, highscoreTypeRef] =
+    useState<string>("time");
+  const [currentLevel, setCurrentLevel, currentLevelRef] = useState<string>("");
 
   async function getScores(level: string, highscoreType: string) {
-    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
-    const url = `${SINERIDER_API_URL}/level/${level}/${highscoreTypeRef.current}`
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL;
+    const url = `${SINERIDER_API_URL}/level/${level}/${highscoreTypeRef.current}`;
     //console.log(`getting scores with url: ${url}`)
-    const response = await fetch(url)
+    const response = await fetch(url);
     const data = await response.json();
     return data.scores;
   }
 
   async function getLevels(level: string) {
-    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL
-    const response = await fetch(`${SINERIDER_API_URL}/levels`)
+    const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL;
+    const response = await fetch(`${SINERIDER_API_URL}/levels`);
     const data = await response.json();
     return data.levels as string[];
   }
 
   async function refreshScores() {
     if (currentLevelRef.current == null || currentLevelRef.length == 0) {
-      return
+      return;
     }
 
-    getScores(currentLevelRef.current, highscoreTypeRef.current).then((scores: Score[]) => {
-      const validScores = scores.filter(score => score.charCount && score.time);
-      setTopScores(validScores);
-    })
+    getScores(currentLevelRef.current, highscoreTypeRef.current).then(
+      (scores: Score[]) => {
+        const validScores = scores.filter(
+          (score) => score.charCount && score.time
+        );
+        setTopScores(validScores);
+      }
+    );
   }
 
   function makeTypePretty() {
     switch (highscoreTypeRef.current) {
-      case "time": return "Time"
-      case "charCount": return "Length"
+      case "time":
+        return "Time";
+      case "charCount":
+        return "Length";
     }
   }
 
   function getRating(score: Score) {
     switch (highscoreTypeRef.current) {
-      case "time": return 'time' in score ? score.time.toFixed(3) : "<undefined>"
-      case "charCount": return 'charCount' in score ? score.charCount : "<undefined>"
+      case "time":
+        return "time" in score ? score.time.toFixed(3) : "<undefined>";
+      case "charCount":
+        return "charCount" in score ? score.charCount : "<undefined>";
     }
-    return "<undefined>"
+    return "<undefined>";
   }
 
-
   function refreshLevels() {
-    getLevels()
-      .then(levels => {
-        //console.log("Levels: " + levels);
-        setLevels(new Set(levels));
+    getLevels().then((levels) => {
+      //console.log("Levels: " + levels);
+      setLevels(new Set(levels));
 
-        if (levels.length > 0) {
-          const l = levels[0]
-          //console.log("Current level: " + l)
-          setCurrentLevel(l)
-        }
-        refreshScores().then()
-      });
+      if (levels.length > 0) {
+        const l = levels[0];
+        //console.log("Current level: " + l)
+        setCurrentLevel(l);
+      }
+      refreshScores().then();
+    });
   }
 
   // Refresh level list on first render
   useEffect(() => {
-    refreshLevels()
+    refreshLevels();
   }, []);
 
   const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLevel = event.target.value;
     //console.log(`Selected level: ${selectedLevel}`);
-    setCurrentLevel(selectedLevel)
-    refreshScores().then()
+    setCurrentLevel(selectedLevel);
+    refreshScores().then();
   };
 
-  const handleHighScoreTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleHighScoreTypeSelect = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const hst = event.target.value;
     //console.log(`Selected high score type: ${hst}`);
-    setHighscoreType(hst)
-    refreshScores().then()
+    setHighscoreType(hst);
+    refreshScores().then();
   };
 
   useEffect(() => {
     const fetchTopScores = async () => {
       try {
-        const response = await fetch(`/api/scores?type=${makeTypePretty()}&level=${currentLevelRef.current}`);
+        const response = await fetch(
+          `/api/scores?type=${makeTypePretty()}&level=${
+            currentLevelRef.current
+          }`
+        );
         const scores = await response.json();
         setTopScores(scores);
       } catch (error) {
@@ -114,10 +126,6 @@ const Home: NextPage = () => {
 
     fetchTopScores();
   }, [makeTypePretty]);
-
-
-
-  
 
   return (
     <>
@@ -133,14 +141,17 @@ const Home: NextPage = () => {
                 <div>
                   <Image src={sledguy} alt="sled" height={90} width={90} />
                 </div>
-                <div className="font-mono sm:text-[54px] text-[22px]">
+                <div className="font-mono sm:text-[54px] text-[32px]">
                   SineRider
                 </div>
               </div>
               <div>
                 <div className="flex gap-2 sm:mt-0 mt-5 items-center">
                   <div className="flex">Challenges</div>
-                  <select  className="w-[220px] pl-2" onChange={handleLevelSelect}>
+                  <select
+                    className="w-[220px] pl-2"
+                    onChange={handleLevelSelect}
+                  >
                     {[...levels].map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -150,45 +161,108 @@ const Home: NextPage = () => {
                 </div>
                 <div className="flex gap-2 items-center">
                   <div className="flex items-center gap-10">Rank by</div>
-                  <select className="w-[250px] pl-2" onChange={handleHighScoreTypeSelect}>
-                    <option key="time" value="time">Time</option>
-                    <option key="charCount" value="charCount">Length</option>
+                  <select
+                    className="w-[250px] pl-2"
+                    onChange={handleHighScoreTypeSelect}
+                  >
+                    <option key="time" value="time">
+                      Time
+                    </option>
+                    <option key="charCount" value="charCount">
+                      Length
+                    </option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
-          <div style={{ paddingTop: "50px" }} className="md:w-[800px] ml-auto mr-auto">
-            <div className={`bg-white flex sm:h-[50px] h-[50px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5}`}>
-              <div style={{ width: "50px", textAlign: "center" }}>Position</div>
-              <div style={{ marginLeft: "10px", paddingLeft: "30px", width: "200px", textAlign: "left" }}>Name</div>
-              <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>Expression</div>
-              <div style={{ width: "400px", textAlign: "center" }}>{makeTypePretty(highscoreType)}</div>
+          <div className="md:w-[800px] ml-auto mr-auto pt-[50px]">
+            <div
+              className={`bg-white flex sm:h-[50px] h-[50px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5}`}
+            >
+              <div
+                style={{ width: "50px", textAlign: "center" }}
+                className="sm:text-[16px] text-[12px]"
+              >
+                Position
+              </div>
+              <div
+                style={{
+                  marginLeft: "10px",
+                  paddingLeft: "30px",
+                  width: "200px",
+                  textAlign: "left",
+                }}
+                className="sm:text-[16px] text-[12px]"
+              >
+                Name
+              </div>
+              <div
+                style={{
+                  paddingLeft: "30px",
+                  width: "200px",
+                  textAlign: "left",
+                }}
+                className="sm:text-[16px] text-[12px]"
+              >
+                Expression
+              </div>
+              <div
+                style={{ width: "400px", textAlign: "center" }}
+                className="sm:text-[16px] text-[12px]"
+              >
+                {makeTypePretty(highscoreType)}
+              </div>
             </div>
             {topScores.length === 0 && (
-      <div className="text-center font-extrabold text-[32px] text-white pt-5">
-        No scores available for {makeTypePretty()} in {currentLevelRef.current}
-      </div>
-    )}
+              <div className="text-center font-extrabold text-[32px] text-white pt-5">
+                No scores available for {makeTypePretty()} in{" "}
+                {currentLevelRef.current}
+              </div>
+            )}
           </div>
-          
 
           <div className="md:w-[800px] ml-auto mr-auto">
             {topScores.map((score, index) => (
               <div
                 key={score.id}
-                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${index > 0 ? "4"
-                  : "0"
-                  }`}
+                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
+                  index > 0 ? "4" : "0"
+                }`}
               >
-                <div style={{ width: "50px", fontSize: 30, fontWeight: "bold" }}>#{index + 1}</div>
-                <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>{score.player.length > 0 ? score.player : "NO_NAME"}</div>
-                <div style={{ paddingLeft: "30px", width: "200px", textAlign: "left" }}>
+                <div
+                  style={{ width: "50px", fontSize: 30, fontWeight: "bold" }}
+                >
+                  #{index + 1}
+                </div>
+                <div
+                  style={{
+                    paddingLeft: "30px",
+                    width: "200px",
+                    textAlign: "left",
+                  }}
+                  className="sm:text-[18px}] text-[12px]"
+                >
+                  {score.player.length > 0 ? score.player : "NO_NAME"}
+                </div>
+                <div
+                  style={{
+                    paddingLeft: "30px",
+                    width: "200px",
+                    textAlign: "left",
+                  }}
+                  className="sm:text-[18px}] text-[12px]"
+                >
                   <MathJax>
                     {`\\(${score.expression.replaceAll("\\\\", "\\")} \\)`}
                   </MathJax>
                 </div>
-                <div style={{ width: "400px", textAlign: "center" }}>{getRating(score)}</div>
+                <div
+                  style={{ width: "400px", textAlign: "center" }}
+                  className="sm:text-[18px}] text-[12px]"
+                >
+                  {getRating(score)}
+                </div>
               </div>
             ))}
           </div>
