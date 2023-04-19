@@ -128,7 +128,7 @@ const Home: NextPage = () => {
         </Head>
         <div className="pt-[100px]">
           <div className="md:w-[1000px] ml-auto mr-auto">
-            <div className="flex items-center gap-10 bg-white sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px]  sm:w-full w-[90%] justify-between px-5 py-3">
+            <div className="sm:flex items-center gap-10 bg-white sm:h-[117px] h-[200px] ml-2 mr-2 rounded-[12px]  sm:w-full w-[95%] justify-between px-5 py-3">
               <div className="flex items-center gap-10">
                 <div>
                   <Image src={sledguy} alt="sled" height={90} width={90} />
@@ -138,9 +138,9 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div>
-                <div style={{ width: "500px" }}>
-                  <div style={{ width: "200px", float: "left", textAlign: "right", paddingRight: "20px" }}>Challenges</div>
-                  <select style={{ width: "300px" }} onChange={handleLevelSelect}>
+                <div className="flex gap-2 sm:mt-0 mt-5 items-center">
+                  <div className="flex">Challenges</div>
+                  <select  className="w-[220px] pl-2" onChange={handleLevelSelect}>
                     {[...levels].map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -148,9 +148,9 @@ const Home: NextPage = () => {
                     ))}
                   </select>
                 </div>
-                <div style={{ width: "500px" }}>
-                  <div style={{ width: "200px", float: "left", textAlign: "right", paddingRight: "20px" }}>Rank by</div>
-                  <select style={{ width: "300px" }} onChange={handleHighScoreTypeSelect}>
+                <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-10">Rank by</div>
+                  <select className="w-[250px] pl-2" onChange={handleHighScoreTypeSelect}>
                     <option key="time" value="time">Time</option>
                     <option key="charCount" value="charCount">Length</option>
                   </select>
