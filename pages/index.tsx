@@ -231,7 +231,7 @@ const Home: NextPage = () => {
             {topScores.map((score, index) => (
               <div
                 key={score.id}
-                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
+                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 gap-2 ${
                   index > 0 ? "4" : "0"
                 }`}
               >
@@ -261,7 +261,10 @@ const Home: NextPage = () => {
                   }`}
                   onClick={handleClick}
                 >
-                   <MathJax>{`\\(${score.expression.replaceAll("\\\\", "\\")} \\)`}</MathJax>
+                  <MathJax>{`\\(${score.expression.replaceAll(
+                    "\\\\",
+                    "\\"
+                  )} \\)`}</MathJax>
                 </div>
                 <div
                   style={{ width: "400px", textAlign: "center" }}
