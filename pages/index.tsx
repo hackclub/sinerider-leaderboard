@@ -246,7 +246,7 @@ const Home: NextPage = () => {
                     width: "200px",
                     textAlign: "left",
                   }}
-                  className="sm:text-[22px}] text-[12px]"
+                  className="sm:text-[28px}] text-[12px]"
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
@@ -256,7 +256,7 @@ const Home: NextPage = () => {
                     width: "200px",
                     textAlign: "left",
                   }}
-                  className={`sm:text-[22px}] text-[12px] inline-block overflow-hidden overflow-ellipsis ${
+                  className={`sm:text-[28px}] text-[12px] cursor-pointer inline-block overflow-hidden overflow-ellipsis ${
                     showFullExpression ? "overflow-visible" : ""
                   }`}
                   onClick={handleClick}
@@ -265,7 +265,7 @@ const Home: NextPage = () => {
                 </div>
                 <div
                   style={{ width: "400px", textAlign: "center" }}
-                  className="sm:text-[22px}] text-[12px]"
+                  className="sm:text-[28px}] text-[12px]"
                 >
                   {getRating(score)}
                 </div>
