@@ -127,6 +127,11 @@ const Home: NextPage = () => {
     fetchTopScores();
   }, [makeTypePretty]);
 
+  const [showFullExpression, setShowFullExpression] = useState(false);
+
+  const handleClick = () => {
+    setShowFullExpression(!showFullExpression);
+  };
   return (
     <>
       <Background>
@@ -241,7 +246,7 @@ const Home: NextPage = () => {
                     width: "200px",
                     textAlign: "left",
                   }}
-                  className="sm:text-[18px}] text-[12px]"
+                  className="sm:text-[22px}] text-[12px]"
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
@@ -251,15 +256,16 @@ const Home: NextPage = () => {
                     width: "200px",
                     textAlign: "left",
                   }}
-                  className="sm:text-[18px}] text-[12px]"
+                  className={`sm:text-[22px}] text-[12px] inline-block overflow-hidden overflow-ellipsis ${
+                    showFullExpression ? "overflow-visible" : ""
+                  }`}
+                  onClick={handleClick}
                 >
-                  <MathJax>
-                    {`\\(${score.expression.replaceAll("\\\\", "\\")} \\)`}
-                  </MathJax>
+                   <MathJax>{`\\(${score.expression.replaceAll("\\\\", "\\")} \\)`}</MathJax>
                 </div>
                 <div
                   style={{ width: "400px", textAlign: "center" }}
-                  className="sm:text-[18px}] text-[12px]"
+                  className="sm:text-[22px}] text-[12px]"
                 >
                   {getRating(score)}
                 </div>
