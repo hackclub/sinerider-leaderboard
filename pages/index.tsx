@@ -164,7 +164,7 @@ const Home: NextPage = () => {
                     ))}
                   </select>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center pt-2">
                   <div className="flex items-center gap-10">Rank by</div>
                   <select
                     className="w-[250px] pl-2"
