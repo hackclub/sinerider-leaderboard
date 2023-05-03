@@ -127,7 +127,7 @@ const Home: NextPage = () => {
     fetchTopScores();
   }, [makeTypePretty]);
 
-  const [showFullExpression, setShowFullExpression] = useState(false);
+  const [showFullExpression, setShowFullExpression] = useState(true);
 
   const handleClick = () => {
     setShowFullExpression(!showFullExpression);
