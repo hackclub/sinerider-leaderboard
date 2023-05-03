@@ -237,21 +237,29 @@ const Home: NextPage = () => {
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
-                <div
-                  style={{
-                    paddingLeft: "30px",
-                    textAlign: "left",
-                  }}
-                  className={`sm:text-[28px}] text-[12px] cursor-pointer inline-block overflow-hidden overflow-ellipsis ${
-                    showFullExpression ? "overflow-visible" : ""
-                  }`}
-                  onClick={handleClick}
-                >
-                  <MathJax>{`\\(${score.expression.replaceAll(
-                    "\\\\",
-                    "\\"
-                  )} \\)`}</MathJax>
-                </div>
+                <td className="text-right">
+  <div className="cursor-pointer" onClick={handleClick}>
+    {showFullExpression
+      ? <MathJax.Provider>
+          <MathJax.Node formula={score.expression} />
+        </MathJax.Provider>
+      : `${score.expression.substring(0, 25)}${score.expression.length > 25 ? '...' : ''}`}
+  </div>
+  {showFullExpression && (
+    <div className="fixed z-10 top-0 left-0 w-screen h-screen bg-gray-800 bg-opacity-50 flex justify-center items-center">
+      <div className="bg-white p-8 rounded-md">
+        <MathJax.Provider>
+          <MathJax.Node formula={score.expression} />
+        </MathJax.Provider>
+        <div className="mt-4 text-center">
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-md" onClick={handleClick}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</td>
                 <div
                   style={{ textAlign: "center" }}
                   className="sm:text-[28px}] text-[12px]"
