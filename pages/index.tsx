@@ -222,7 +222,10 @@ const Home: NextPage = () => {
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
                 <td className="text-right">
-                  <div className="cursor-pointer sm:text-[28px}] text-[12px]" onClick={handleClick}>
+                  <div
+                    className="cursor-pointer sm:text-[28px}] text-[12px]"
+                    onClick={handleClick}
+                  >
                     {showFullExpression ? (
                       <MathJax.Provider>
                         <MathJax.Node formula={score.expression} />
@@ -251,6 +254,7 @@ const Home: NextPage = () => {
                     </div>
                   )}
                 </td>
+
                 <div
                   style={{ textAlign: "center" }}
                   className="sm:text-[28px}] text-[12px]"
