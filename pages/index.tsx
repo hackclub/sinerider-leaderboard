@@ -221,7 +221,7 @@ const Home: NextPage = () => {
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
-                <td className="text-right relative">
+                <div className="text-right relative">
       <div
         className="cursor-pointer sm:text-[28px}] text-[12px]"
         onClick={handleClick}
@@ -251,7 +251,7 @@ const Home: NextPage = () => {
           </button>
         </div>
       )}
-    </td>
+    </div>
 
                 <div
                   style={{ textAlign: "center" }}
