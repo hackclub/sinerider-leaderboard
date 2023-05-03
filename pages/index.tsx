@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   }
 
   async function refreshScores() {
-    if (currentLevelRef.current() == null || currentLevelRef.current().length == 0) {
+    if (currentLevelRef.current == null || currentLevelRef.length == 0) {
       return;
     }
 
