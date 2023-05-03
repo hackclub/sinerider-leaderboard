@@ -1,4 +1,3 @@
-
 // @ts-nocheck
 import { useEffect } from "react";
 import type { NextPage } from "next";
@@ -129,7 +128,6 @@ const Home: NextPage = () => {
   }, [makeTypePretty]);
 
   const [showFullExpression, setShowFullExpression] = useState(false);
-  const score = { expression: "x^2 + y^2 = z^2" };
 
   const handleClick = () => {
     setShowFullExpression(!showFullExpression);
@@ -223,7 +221,7 @@ const Home: NextPage = () => {
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
-                <td className="text-right">
+                <td className="text-right relative">
       <div
         className="cursor-pointer sm:text-[28px}] text-[12px]"
         onClick={handleClick}
@@ -240,19 +238,17 @@ const Home: NextPage = () => {
       </div>
       {showFullExpression && (
         <div className="fixed z-10 top-0 left-0 w-screen h-screen bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-8 rounded-md">
+          <div className="absolute inset-0 backdrop-filter backdrop-blur-lg flex justify-center items-center">
             <MathJax.Provider>
               <MathJax.Node formula={score.expression} />
             </MathJax.Provider>
-            <div className="mt-4 text-center">
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                onClick={handleClick}
-              >
-                Close
-              </button>
-            </div>
           </div>
+          <button
+            className="absolute top-0 right-0 m-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+            onClick={handleClick}
+          >
+            Close
+          </button>
         </div>
       )}
     </td>
