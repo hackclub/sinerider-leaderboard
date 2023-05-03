@@ -236,14 +236,13 @@ const Home: NextPage = () => {
                 }`}
               >
                 <div
-                  style={{ width: "50px", fontSize: 30, fontWeight: "bold" }}
+                  style={{  fontSize: 30, fontWeight: "bold" }}
                 >
                   #{index + 1}
                 </div>
                 <div
                   style={{
                     paddingLeft: "30px",
-                    width: "200px",
                     textAlign: "left",
                   }}
                   className="sm:text-[28px}] text-[12px]"
@@ -253,7 +252,6 @@ const Home: NextPage = () => {
                 <div
                   style={{
                     paddingLeft: "30px",
-                    width: "200px",
                     textAlign: "left",
                   }}
                   className={`sm:text-[28px}] text-[12px] cursor-pointer inline-block overflow-hidden overflow-ellipsis ${
@@ -267,7 +265,7 @@ const Home: NextPage = () => {
                   )} \\)`}</MathJax>
                 </div>
                 <div
-                  style={{ width: "400px", textAlign: "center" }}
+                  style={{ textAlign: "center" }}
                   className="sm:text-[28px}] text-[12px]"
                 >
                   {getRating(score)}
