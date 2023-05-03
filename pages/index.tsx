@@ -186,34 +186,22 @@ const Home: NextPage = () => {
               className={`bg-white flex sm:h-[50px] h-[50px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5}`}
             >
               <div
-                style={{ width: "50px", textAlign: "center" }}
                 className="sm:text-[16px] text-[12px]"
               >
                 Position
               </div>
               <div
-                style={{
-                  marginLeft: "10px",
-                  paddingLeft: "30px",
-                  width: "200px",
-                  textAlign: "left",
-                }}
                 className="sm:text-[16px] text-[12px]"
               >
                 Name
               </div>
               <div
-                style={{
-                  paddingLeft: "30px",
-                  width: "200px",
-                  textAlign: "left",
-                }}
                 className="sm:text-[16px] text-[12px]"
               >
                 Expression
               </div>
               <div
-                style={{ width: "400px", textAlign: "center" }}
+                
                 className="sm:text-[16px] text-[12px]"
               >
                 {makeTypePretty(highscoreType)}
