@@ -129,9 +129,10 @@ const Home: NextPage = () => {
 
   const [showFullExpression, setShowFullExpression] = useState(false);
 
-  const handleClick = () => {
-    setShowFullExpression(!showFullExpression);
-  };
+const handleClick = () => {
+  setShowFullExpression(!showFullExpression);
+};
+
   return (
     <>
       <Background>
