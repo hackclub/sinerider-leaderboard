@@ -233,8 +233,8 @@ const Home: NextPage = () => {
             <MathJax.Node formula={score.expression} />
           </MathJax.Provider>
         ) : (
-          `${score.expression.substring(0, 25)}${
-            score.expression.length > 25 ? "..." : ""
+          `${score.expression.substring(0, 15)}${
+            score.expression.length > 15 ? "..." : ""
           }`
         )}
       </div>
