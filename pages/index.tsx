@@ -265,6 +265,13 @@ const Home: NextPage = () => {
             ))}
           </div>
         </div>
+        <footer className="text-center text-white bottom-2 fixed flex w-full justify-center">
+          <a href="https://github.com/hackclub/sinerider-leaderboard#readme">
+          <div className="text-center ">
+          Built and maintained by teenagers. Version 0.5
+          </div>
+          </a>
+          </footer>
       </Background>
     </>
   );
