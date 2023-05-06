@@ -127,11 +127,7 @@ const Home: NextPage = () => {
     fetchTopScores();
   }, [makeTypePretty]);
 
-  const [showFullExpression, setShowFullExpression] = useState(false);
-
-  const handleClick = () => {
-    setShowFullExpression(!showFullExpression);
-  };
+  
 
   return (
     <>
@@ -224,7 +220,6 @@ const Home: NextPage = () => {
                 <div className="text-right relative">
                   <div
                     className="cursor-pointer sm:text-[28px]] text-[12px]"
-                    onClick={handleClick}
                   >
                     {showFullExpression ? (
                       <MathJax.Provider>
