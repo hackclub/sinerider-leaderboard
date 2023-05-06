@@ -7,6 +7,8 @@ import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
 import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
+import Tooltip from "react-tooltip";
+import "react-tooltip/dist/styles.css";
 
 interface Score {
   id: string;
@@ -129,8 +131,6 @@ const Home: NextPage = () => {
 
   const [showFullExpression, setShowFullExpression] = useState(false);
 
- 
-
   return (
     <>
       <Background>
@@ -222,8 +222,15 @@ const Home: NextPage = () => {
                 <div className="text-right relative">
                   <div
                     className="cursor-pointer sm:text-[28px]] text-[12px]"
-                    title={score.expression}
-                  
+                    data-tip={
+                      showFullExpression && (
+                        <MathJax.Provider>
+                          <MathJax.Node formula={score.expression} />
+                        </MathJax.Provider>
+                      )
+                    }
+                    onMouseEnter={() => setShowFullExpression(true)}
+                    onMouseLeave={() => setShowFullExpression(false)}
                   >
                     {showFullExpression ? (
                       <MathJax.Provider>
@@ -235,6 +242,7 @@ const Home: NextPage = () => {
                       }`
                     )}
                   </div>
+                  <Tooltip />
                 </div>
 
                 <div
