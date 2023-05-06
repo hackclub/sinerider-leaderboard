@@ -8,7 +8,6 @@ import sledguy from "../public/assets/sled.svg";
 import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
 import Tooltip from "react-tooltip";
-import "react-tooltip/dist/styles.css";
 
 interface Score {
   id: string;
