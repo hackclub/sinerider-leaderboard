@@ -223,36 +223,20 @@ const Home: NextPage = () => {
                 >
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
-                <div className="text-right relative">
-                <div
-  className="cursor-pointer sm:text-[28px]] text-[12px]"
-  onClick={handleClick}
->
-  {showFullExpression ? (
-    <MathJax.Provider>
-      <MathJax.Node formula={score.expression} />
-    </MathJax.Provider>
-  ) : (
-    `${score.expression.substring(0, 15)}${
-      score.expression.length > 15 ? "..." : ""
-    }`
-  )}
-</div>
-{showFullExpression && (
-  <div className="fixed z-10 top-0 left-0 w-screen h-screen bg-gray-800 bg-opacity-50 flex justify-center items-center">
-    <div className="absolute inset-0 backdrop-filter backdrop-blur-lg flex justify-center items-center">
-      <MathJax.Provider>
-        <MathJax.Node formula={score.expression} />
-      </MathJax.Provider>
-    </div>
-    <button
-      className="absolute top-0 right-0 m-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-      onClick={handleClick}
-    >
-      Close
-    </button>
-  </div>
-)}
+                <div className="flex items-center">
+            <div
+              onClick={handleClick}
+              className="cursor-pointer flex items-center"
+            >
+              <div className="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                <MathJax
+                  text={showFullExpression ? score.expression : score.expression.replace(/./g, "*")}
+                />
+              </div>
+            </div>
+            <div className="ml-2 text-gray-400 text-sm">{score.time.toFixed(3)} s</div>
+        
+
 
     </div>
 
