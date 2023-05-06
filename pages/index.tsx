@@ -129,7 +129,9 @@ const Home: NextPage = () => {
 
   const [showFullExpression, setShowFullExpression] = useState(false);
 
- 
+  const handleClick = () => {
+    setShowFullExpression(!isshowFullExpression);
+  };
 
   return (
     <>
@@ -220,7 +222,7 @@ const Home: NextPage = () => {
                   {score.player.length > 0 ? score.player : "NO_NAME"}
                 </div>
                 <div className="text-right relative">
-                  <div
+                  <div onClick={handleClick}
                     className="cursor-pointer sm:text-[28px]] text-[12px]"
                   
                   >
@@ -233,6 +235,11 @@ const Home: NextPage = () => {
                         score.expression.length > 15 ? "..." : ""
                       }`
                     )}
+                    {isshowFullExpression && <div>
+                      <MathJax.Provider>
+                        <MathJax.Node formula={score.expression} />
+                      </MathJax.Provider>
+                      </div>}
                   </div>
                 </div>
 
