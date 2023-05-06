@@ -239,13 +239,13 @@ const Home: NextPage = () => {
   )}
 </div>
 {showFullExpression && (
-  <div className="">
-    <div className="">
+  
       <MathJax.Provider>
         <MathJax.Node formula={score.expression} />
       </MathJax.Provider>
-    </div>
-  </div>
+      
+
+ 
 )}
 
     </div>
