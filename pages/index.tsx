@@ -155,9 +155,9 @@ const Home: NextPage = () => {
               </div>
               <div>
                 <div className="flex gap-2 sm:mt-0 mt-5 items-center">
-                  <div className="flex">Puzzle</div>
+                  <div className="flex pl-1.5 ">Puzzle</div>
                   <select
-                    className="w-[260px] pl-2"
+                    className="w-[255px] pl-2"
                     onChange={handleLevelSelect}
                   >
                     {[...levels].map((level) => (
