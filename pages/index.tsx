@@ -193,8 +193,7 @@ const Home: NextPage = () => {
             </div>
             {topScores.length === 0 && (
               <div className="text-center font-extrabold text-[32px] text-white pt-5">
-                No scores available for {makeTypePretty()} in{" "}
-                {currentLevelRef.current}
+               No Scores Available
               </div>
             )}
           </div>
