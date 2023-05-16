@@ -129,8 +129,6 @@ const Home: NextPage = () => {
 
   const [showFullExpression, setShowFullExpression] = useState(false);
 
- 
-
   return (
     <>
       <Background>
@@ -193,7 +191,7 @@ const Home: NextPage = () => {
             </div>
             {topScores.length === 0 && (
               <div className="text-center font-extrabold text-[32px] text-white pt-5">
-               No Scores Available
+                No Scores Available
               </div>
             )}
           </div>
@@ -222,20 +220,30 @@ const Home: NextPage = () => {
                   <div
                     className="cursor-pointer sm:text-[28px]] text-[12px]"
                     title={score.expression}
-                  
                   >
                     {showFullExpression ? (
                       <MathJax.Provider>
                         <MathJax.Node formula={score.expression} />
                       </MathJax.Provider>
                     ) : (
-                      `${score.expression.substring(0, 15)}${
-                        score.expression.length > 15 ? "..." : ""
-                      }`
+                      <>
+                        <span className="truncate">{score.expression}</span>
+                        {score.expression.length > 15 && (
+                          <button
+                            className="text-blue-500 underline"
+                            onClick={() => setShowFullExpression(true)}
+                          >
+                            Show More
+                          </button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
-
+                This code uses the truncate class to truncate the expression and
+                adds a "Show More" button if the expression length exceeds 15
+                characters. Clicking on the "Show More" button will display the
+                full expression.
                 <div
                   style={{ textAlign: "center" }}
                   className="sm:text-[28px}] text-[12px]"
