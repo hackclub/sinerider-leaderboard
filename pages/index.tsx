@@ -116,26 +116,6 @@ const Home: NextPage = () => {
     refreshScores().then();
   };
 
-  /*
-  useEffect(() => {
-    const fetchTopScores = async () => {
-      try {
-        const response = await fetch(
-          `/api/scores?type=${makeTypePretty()}&level=${
-            currentLevelRef.current
-          }`
-        );
-        const scores = await response.json();
-        setTopScores(scores);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchTopScores();
-  }, [makeTypePretty]);
-  */
-
   useEffect(() => {
     getLevels().then(result => setLevels(result));
   }, []);
@@ -236,7 +216,13 @@ const Home: NextPage = () => {
                     title={score.expression}
 
                   >
-                    <MathJax>{score.expression}</MathJax>
+                    {score.expression.length <= 50 ? (
+                        <MathJax>{score.expression} </MathJax>
+                    ) : (
+                      <>
+                      {`${score.expression.substring(0, 15)}${score.expression.length > 15 ? "..." : ""}`}
+                      </>
+                    )}
                   </div>
                 </div>
 
