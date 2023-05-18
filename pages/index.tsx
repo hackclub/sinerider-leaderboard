@@ -216,7 +216,7 @@ const Home: NextPage = () => {
                     title={score.expression}
 
                   >
-                    {score.expression.length <= 50 ? (
+                    {score.expression.length <= 100 ? (
                         <MathJax>{score.expression} </MathJax>
                     ) : (
                       <>
