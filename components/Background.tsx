@@ -11,6 +11,7 @@ const Background = ({ children }: RandomBackgroundProps) => {
     "/assets/bg1.png",
     "/assets/bg2.png",
     "/assets/bg3.png",
+    "/assets/bg4.png",
   ];
 
   useEffect(() => {
