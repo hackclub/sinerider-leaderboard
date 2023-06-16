@@ -7,6 +7,7 @@ import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
 import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
+import { useRouter } from "next/router"; 
 
 interface Score {
   id: string;
@@ -18,6 +19,12 @@ interface Score {
 }
 
 const Home: NextPage = () => {
+  const router = useRouter(); 
+  const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLevel = event.target.value;
+    router.push(`/${selectedLevel}`); 
+  };
+
   const [topScores, setTopScores, topScoresRef] = useState<Score[]>([]);
   const [levels, setLevels, levelsRef] = useState<Set<string>>(new Set());
   const [highscoreType, setHighscoreType, highscoreTypeRef] =
@@ -100,12 +107,7 @@ const Home: NextPage = () => {
     refreshLevels();
   }, []);
 
-  const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLevel = event.target.value;
-    //console.log(`Selected level: ${selectedLevel}`);
-    setCurrentLevel(selectedLevel);
-    refreshScores().then();
-  };
+
 
   const handleHighScoreTypeSelect = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -143,18 +145,15 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div>
-                <div className="flex gap-2 sm:mt-0 mt-5 items-center">
-                  <div className="flex pl-1.5 ">Puzzle</div>
-                  <select
-                    className="w-[255px] pl-2"
-                    onChange={handleLevelSelect}
-                  >
-                    {[...levels].map((level) => (
-                      <option key={level} value={level}>
-                        {level}
-                      </option>
-                    ))}
-                  </select>
+              <div className="flex gap-2 sm:mt-0 mt-5 items-center">
+                <div className="flex pl-1.5 ">Puzzle</div>
+                <select className="w-[255px] pl-2" onChange={handleLevelSelect}>
+                  {[...levels].map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
+                </select>
                 </div>
                 <div className="flex gap-2 items-center pt-2">
                   <div className="flex items-center gap-10">Rank by</div>
