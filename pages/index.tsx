@@ -7,6 +7,7 @@ import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
 import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
+import { useRouter } from "next/router";
 
 interface Score {
   id: string;
@@ -18,22 +19,26 @@ interface Score {
 }
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLevel = event.target.value;
+    router.push(`/${selectedLevel}`);
+  };
+
   const [topScores, setTopScores, topScoresRef] = useState<Score[]>([]);
   const [levels, setLevels, levelsRef] = useState<Set<string>>(new Set());
-  const [highscoreType, setHighscoreType, highscoreTypeRef] =
-    useState<string>("time");
+  const [highscoreType, setHighscoreType, highscoreTypeRef] = useState<string>("time");
   const [currentLevel, setCurrentLevel, currentLevelRef] = useState<string>("");
 
   async function getScores(level: string, highscoreType: string) {
     const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL;
-    const url = `${SINERIDER_API_URL}/level/${level}/${highscoreTypeRef.current}`;
-    //console.log(`getting scores with url: ${url}`)
+    const url = `${SINERIDER_API_URL}/level/${level}/${highscoreType}`;
     const response = await fetch(url);
     const data = await response.json();
     return data.scores;
   }
 
-  async function getLevels(level: string) {
+  async function getLevels() {
     const SINERIDER_API_URL = process.env.NEXT_PUBLIC_SINERIDER_API_URL;
     const response = await fetch(`${SINERIDER_API_URL}/levels`);
     const data = await response.json();
@@ -46,18 +51,16 @@ const Home: NextPage = () => {
   }
 
   async function refreshScores() {
-    if (currentLevelRef.current == null || currentLevelRef.length == 0) {
+    if (!currentLevelRef.current || currentLevelRef.current.length === 0) {
       return;
     }
 
-    getScores(currentLevelRef.current, highscoreTypeRef.current).then(
-      (scores: Score[]) => {
-        const validScores = scores.filter(
-          (score) => score.charCount && score.time
-        );
-        setTopScores(validScores.map(score => ({ ...score, expression: buildMathJaxExpression(score.expression)})));
-      }
-    );
+    const scores = await getScores(currentLevelRef.current, highscoreTypeRef.current);
+    const validScores = scores.filter((score) => score.charCount && score.time);
+    setTopScores(validScores.map((score) => ({
+      ...score,
+      expression: buildMathJaxExpression(score.expression),
+    })));
   }
 
   function makeTypePretty() {
@@ -66,6 +69,8 @@ const Home: NextPage = () => {
         return "Time";
       case "charCount":
         return "Length";
+      default:
+        return "";
     }
   }
 
@@ -75,23 +80,20 @@ const Home: NextPage = () => {
         return "time" in score ? score.time.toFixed(3) : "<undefined>";
       case "charCount":
         return "charCount" in score ? score.charCount : "<undefined>";
+      default:
+        return "<undefined>";
     }
-    return "<undefined>";
   }
 
   function refreshLevels() {
     getLevels().then((levels) => {
-      //console.log("Levels: " + levels);
       setLevels(new Set(levels));
 
       if (levels.length > 0) {
         const l = levels[0];
-        //console.log("Current level: " + l)
         setCurrentLevel(l);
       }
-      refreshScores().then(() => {
-
-      });
+      refreshScores();
     });
   }
 
@@ -100,29 +102,13 @@ const Home: NextPage = () => {
     refreshLevels();
   }, []);
 
-  const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLevel = event.target.value;
-    //console.log(`Selected level: ${selectedLevel}`);
-    setCurrentLevel(selectedLevel);
-    refreshScores().then();
-  };
-
-  const handleHighScoreTypeSelect = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleHighScoreTypeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const hst = event.target.value;
-    //console.log(`Selected high score type: ${hst}`);
     setHighscoreType(hst);
-    refreshScores().then();
+    refreshScores();
   };
-
-  useEffect(() => {
-    getLevels().then(result => setLevels(result));
-  }, []);
 
   const [showFullExpression, setShowFullExpression] = useState(false);
-
-
 
   return (
     <>
@@ -144,11 +130,8 @@ const Home: NextPage = () => {
               </div>
               <div>
                 <div className="flex gap-2 sm:mt-0 mt-5 items-center">
-                  <div className="flex pl-1.5 ">Puzzle</div>
-                  <select
-                    className="w-[255px] pl-2"
-                    onChange={handleLevelSelect}
-                  >
+                  <div className="flex pl-1.5">Puzzle</div>
+                  <select className="w-[255px] pl-2" onChange={handleLevelSelect}>
                     {[...levels].map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -181,7 +164,7 @@ const Home: NextPage = () => {
               <div className="sm:text-[16px] text-[12px]">Name</div>
               <div className="sm:text-[16px] text-[12px]">Expression</div>
               <div className="sm:text-[16px] text-[12px]">
-                {makeTypePretty(highscoreType)}
+                {makeTypePretty()}
               </div>
             </div>
             {topScores.length === 0 && (
@@ -195,57 +178,22 @@ const Home: NextPage = () => {
             {topScores.map((score, index) => (
               <div
                 key={score.id}
-                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 gap-2 ${index > 0 ? "4" : "0"
-                  }`}
+                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 ${
+                  index === 0 ? "bg-yellow-400" : ""
+                }`}
               >
-                <div style={{ fontSize: 30, fontWeight: "bold" }}>
-                  #{index + 1}
+                <div className="sm:text-[20px] text-[16px]">{index + 1}</div>
+                <div className="sm:text-[20px] text-[16px]">{score.player}</div>
+                <div className="sm:text-[20px] text-[16px]">
+                  <MathJax.Text text={score.expression} />
                 </div>
-                <div
-                  style={{
-                    paddingLeft: "30px",
-                    textAlign: "left",
-                  }}
-                  className="sm:text-[28px}] text-[12px]"
-                >
-                  {score.player.length > 0 ? score.player : "NO_NAME"}
-                </div>
-                <div className="text-right relative">
-                  <div
-                    className="cursor-pointer sm:text-[28px]] text-[12px]"
-                    title={score.expression}
-
-                  >
-                    {score.expression.length <= 100 ? (
-                        <MathJax>{score.expression} </MathJax>
-                    ) : (
-                      <>
-                      {`${score.expression.substring(0, 15)}${score.expression.length > 15 ? "..." : ""}`}
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  style={{ textAlign: "center" }}
-                  className="sm:text-[28px}] text-[12px]"
-                >
+                <div className="sm:text-[20px] text-[16px]">
                   {getRating(score)}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <footer className="text-center text-white bottom-2 fixed flex w-full justify-center">
-          <a
-            href="https://github.com/hackclub/sinerider-leaderboard#readme"
-            className="hover:underline"
-          >
-            <div className="text-center ">
-              Built and maintained by teenagers. Version 0.5
-            </div>
-          </a>
-        </footer>
       </Background>
     </>
   );
