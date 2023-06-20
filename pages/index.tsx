@@ -109,11 +109,16 @@ const Home: NextPage = () => {
   const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLevel = event.target.value;
     setCurrentLevel(selectedLevel);
-    refreshScores().then(() => {
-      const levelURL = `/levels/${selectedLevel}`;
-      console.log(levelURL); 
-    });
+  
+    const levelURL = `/levels/${selectedLevel}`;
+    console.log(levelURL);
+  
+    try {
+    } catch (error) {
+      console.error("Error generating URL:", error);
+    }
   };
+  
   
 
   const handleHighScoreTypeSelect = (
