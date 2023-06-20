@@ -108,12 +108,13 @@ const Home: NextPage = () => {
 
   const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLevel = event.target.value;
-    //console.log(`Selected level: ${selectedLevel}`);
     setCurrentLevel(selectedLevel);
     refreshScores().then(() => {
-      router.push(`/levels/${selectedLevel}`); // Navigate to the selected level
+      const levelURL = `/levels/${selectedLevel}`;
+      console.log(levelURL); 
     });
   };
+  
 
   const handleHighScoreTypeSelect = (
     event: React.ChangeEvent<HTMLSelectElement>
