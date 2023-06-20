@@ -7,7 +7,6 @@ import Image from "next/image";
 import sledguy from "../public/assets/sled.svg";
 import useState from "react-usestateref";
 import { MathJax } from "better-react-mathjax";
-import { useRouter } from "next/router";
 
 interface Score {
   id: string;
@@ -19,8 +18,6 @@ interface Score {
 }
 
 const Home: NextPage = () => {
-  const router = useRouter();
-
   const [topScores, setTopScores, topScoresRef] = useState<Score[]>([]);
   const [levels, setLevels, levelsRef] = useState<Set<string>>(new Set());
   const [highscoreType, setHighscoreType, highscoreTypeRef] =
@@ -58,12 +55,7 @@ const Home: NextPage = () => {
         const validScores = scores.filter(
           (score) => score.charCount && score.time
         );
-        setTopScores(
-          validScores.map((score) => ({
-            ...score,
-            expression: buildMathJaxExpression(score.expression),
-          }))
-        );
+        setTopScores(validScores.map(score => ({ ...score, expression: buildMathJaxExpression(score.expression)})));
       }
     );
   }
@@ -97,7 +89,9 @@ const Home: NextPage = () => {
         //console.log("Current level: " + l)
         setCurrentLevel(l);
       }
-      refreshScores().then(() => {});
+      refreshScores().then(() => {
+
+      });
     });
   }
 
@@ -108,18 +102,10 @@ const Home: NextPage = () => {
 
   const handleLevelSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLevel = event.target.value;
+    //console.log(`Selected level: ${selectedLevel}`);
     setCurrentLevel(selectedLevel);
-  
-    const levelURL = `/levels/${selectedLevel}`;
-    console.log(levelURL);
-  
-    try {
-    } catch (error) {
-      console.error("Error generating URL:", error);
-    }
+    refreshScores().then();
   };
-  
-  
 
   const handleHighScoreTypeSelect = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -131,10 +117,12 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    getLevels().then((result) => setLevels(result));
+    getLevels().then(result => setLevels(result));
   }, []);
 
   const [showFullExpression, setShowFullExpression] = useState(false);
+
+
 
   return (
     <>
@@ -207,9 +195,8 @@ const Home: NextPage = () => {
             {topScores.map((score, index) => (
               <div
                 key={score.id}
-                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 gap-2 ${
-                  index > 0 ? "4" : "0"
-                }`}
+                className={`bg-white flex sm:h-[117px] h-[90px] ml-2 mr-2 rounded-[12px] justify-between items-center sm:ml-5 sm:mr-5 px-10 mt-5 gap-2 ${index > 0 ? "4" : "0"
+                  }`}
               >
                 <div style={{ fontSize: 30, fontWeight: "bold" }}>
                   #{index + 1}
@@ -227,14 +214,13 @@ const Home: NextPage = () => {
                   <div
                     className="cursor-pointer sm:text-[28px]] text-[12px]"
                     title={score.expression}
+
                   >
                     {score.expression.length <= 100 ? (
-                      <MathJax>{score.expression} </MathJax>
+                        <MathJax>{score.expression} </MathJax>
                     ) : (
                       <>
-                        {`${score.expression.substring(0, 15)}${
-                          score.expression.length > 15 ? "..." : ""
-                        }`}
+                      {`${score.expression.substring(0, 15)}${score.expression.length > 15 ? "..." : ""}`}
                       </>
                     )}
                   </div>
