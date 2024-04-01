@@ -236,7 +236,7 @@ const Home: NextPage = () => {
             ))}
           </div>
         </div>
-        <footer className="text-center text-white bottom-2 fixed flex w-full justify-center">
+        <footer className="text-center text-white bottom-2 mt-20 flex w-full justify-center">
           <a
             href="https://github.com/hackclub/sinerider-leaderboard#readme"
             className="hover:underline"
