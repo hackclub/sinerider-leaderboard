@@ -27,8 +27,13 @@ const Background = ({ children }: RandomBackgroundProps) => {
         backgroundColor: "#000000",
         backgroundSize: "cover",
         backgroundPosition: "center",
+
         minHeight: "100vh",
         minWidth: "100vw",
+
+        display:"flex",
+        flexDirection:"column",
+
       }}
     >
       {children}

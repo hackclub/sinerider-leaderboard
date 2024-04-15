@@ -131,7 +131,10 @@ const Home: NextPage = () => {
           <title>Sinerider Leaderboard</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="pt-[100px]">
+
+
+
+        <div className="py-20 flex-1">
           <div className="md:w-[1000px] ml-auto mr-auto">
             <div className="sm:flex items-center gap-10 bg-white sm:h-[117px] h-[200px] ml-2 mr-2 rounded-[12px]  sm:w-full w-[95%] justify-between px-5 py-3">
               <div className="flex items-center gap-10">
@@ -236,7 +239,10 @@ const Home: NextPage = () => {
             ))}
           </div>
         </div>
-        <footer className="text-center text-white bottom-2 fixed flex w-full justify-center">
+
+
+        <footer className="text-center text-white bottom-2 mt-1.5 
+       flex w-full justify-center">
           <a
             href="https://github.com/hackclub/sinerider-leaderboard#readme"
             className="hover:underline"
@@ -246,6 +252,8 @@ const Home: NextPage = () => {
             </div>
           </a>
         </footer>
+
+
       </Background>
     </>
   );
