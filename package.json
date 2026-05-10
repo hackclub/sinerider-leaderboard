@@ -13,7 +13,7 @@
     "react-dom": "18.2.0",
     "react-tooltip": "^5.11.2",
     "react-usestateref": "^1.0.8",
-    "webpack": "^5.78.0"
+    "webpack": "^5.104.1"
   },
   "devDependencies": {
     "@types/node": "18.11.3",
